@@ -133,6 +133,7 @@ int main( int argc, const char *argv[] )
           //Read input from the file given as the first CL argument
           fails=ifile>>calc;
           return fails;
+
      }
      //If no file is provided, read from stdin
      return ReadFromCin(calc);

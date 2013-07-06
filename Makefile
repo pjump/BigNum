@@ -3,9 +3,10 @@
 
 #allowed commands: rm, gcc, g++, mkdir, doxygen, cp, mv, cd, ar, make
 #OPTIONS
-EXE=skocipet
+EXE=bignum
 CXXFLAGS= -Wall -pedantic -Wno-long-long -O0 -ggdb -std=c++0x -DSTYPE=u64 
 #-DUSE_READLINE
+#Add the above option along with adding -lreadline to CLIBS if you want readline support when running the program interactively
 DOXY=Doxyfile
 CLIBS=
 #-lreadline
