@@ -18,6 +18,7 @@ RM=rm -rf
 SRCDIR=src
 DOCDIR=doc
 BINDIR=bin
+#NOTE: $() references established vars
 #Objects
 OBJDIR=$(BINDIR)/objs
 #Dependencies
@@ -25,11 +26,16 @@ DEPDIR=$(SRCDIR)/.deps
 
 #An object and a dependency file will be created out of each and every *.cpp in $(SRCDIR)
 SRCS=$(wildcard $(SRCDIR)/*.cpp)
-OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
-DEPS = $(patsubst $(OBJDIR)/%.o,$(DEPDIR)/%.d,$(OBJS))
+#Two ways to change suffixes below:
+#% in substitutions = * (the wildcard)
+#OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+#DEPS = $(patsubst $(OBJDIR)/%.o,$(DEPDIR)/%.d,$(OBJS))
+OBJS = $(SRCS:.cpp=.o)
+DEPS = $(SRCS:.cpp=.d)
+
 
 #----------------------------------------------------------------------------------
-#PHONY TARGETS (make won't get confugesed if the corresponding files exist)
+#PHONY TARGETS (make won't get confused if the corresponding files exist)
 .PHONY: all compile run clean deps
 
 all: compile doc
@@ -37,14 +43,19 @@ compile: $(EXE)
 run: $(EXE)
 	./$(EXE) test 
 clean:
-	$(RM) bin doc $(EXE) $(DEPDIR)
+	$(RM) $(BINDIR) $(DOCDIR) $(EXE) $(DEPDIR)
 deps: $(DEPS)
-doc: $(DOXY) src/* 
+#@ suppresses echoing of the line that's prefixed with it
+doc: $(DOXY) $(SRCDIR)/* 
 	@mkdir -p doc
 	@doxygen $(DOXY) \&>/dev/null
 
 #REAL TARGETS ----------------------------------------------------------------------------------
 
+#Automatic Variables:
+#$@ = The file of the target of the rule
+#$* = stem of the target in an implicit rule (target - suffix)
+#$< = file name of the first prerequisite
 $(OBJDIR) $(DEPDIR):
 	mkdir -p $@
 
@@ -60,5 +71,3 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
 
 $(EXE): $(OBJS) 
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXE) $(CLIBS)
-
-
