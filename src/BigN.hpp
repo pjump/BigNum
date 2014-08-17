@@ -19,10 +19,10 @@ namespace BigNum {
 using namespace std;
 
 /**\brief An Arbitrary Precision Number
- \tparam type of elementary storage units (cells) 
+ \tparam type of elementary storage units (cells)
  \sa \ref about
   */
-template<typename S=STYPE> 
+template<typename S=STYPE>
 class BigN {
      static_assert( numeric_limits<S>::is_integer && !(numeric_limits<S>::is_signed), "Must use an unsigned integer storage type." );
 
@@ -257,7 +257,7 @@ public:
           size_t nth=beg_+pad+n;
           if((nth+1)>=v_.size())
 			return;
-		
+
           if((*this)[nth+1]>=5) {
                (*this)[nth]=(*this)[nth]+1;
                _propagate_carry(pad+n);
@@ -293,7 +293,7 @@ public:
      BigN (bool b) {
           _read_in_from_a_number(int(b));
      }
-     
+
      ///Returns a value >=1 if *this>Y, 0 if *this==Y, and a value <=-1 if *this<Y
      int compare(const BigN& Y) const {
           //If signs differ, we already know which is one greater than the other
@@ -324,7 +324,7 @@ public:
 
      //Default copy constructor
      //Default move constructor
-     
+
      operator bool() const {
           for(size_t i=beg_; i<v_.size(); i++)
                if(v_[i]) return true;
@@ -342,13 +342,6 @@ public:
           return *this;
      }
 
-     BigN& operator=(BigN&& y) {
-          v_=(move(y.v_));
-          scale_=y.scale_;
-          beg_=y.beg_;
-          sign_=y.sign_;
-          return *this;
-     }
      BigN& operator=(const BigN& y) {
           if(this==&y) return *this;
           v_=((y.v_));
@@ -377,7 +370,7 @@ public:
 			sign_ = sign_==PLUS ? MINUS : PLUS;
 		  return *this;
      }
-     
+
      BigN& operator--() {
           (*this)-=1;
           return *this;
@@ -429,7 +422,7 @@ public:
      MOVE_OP2_(*)
 ///If y is n rvalue and x isn't, turn it around and flip the sign
 inline friend BigN&& operator - (const BigN& x,BigN&& y) { y -= x; return -y; }
-    
+
      friend string to_string(const BigN& x) {
           stringstream ss;
           ss<<x;

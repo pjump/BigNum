@@ -1,0 +1,4 @@
+*.o
+bignum
+doc/
+build/

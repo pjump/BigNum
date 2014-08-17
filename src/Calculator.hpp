@@ -184,7 +184,7 @@ private:
                exInvalidOp(const string& arg) : Tk::exInvalidTk(string("Invalid operator: ") + arg) {}
           };
 
-     private:
+     protected:
           unsigned  prec_ : 4;	 ///<operator precedence
           fptr exec_;		///function to be executed upon operator evaluation
 
@@ -212,7 +212,7 @@ private:
 
 
      /** \brief Base Class for Unary Operator Tokens
-     
+
      All unary operators are unaryOpT::eval()'ed in the same way inasmuch that the second argument to the OpT::exec_ function pointer is ignored when the pointed-to function is invoked.
       */
      class unaryOpT
@@ -225,7 +225,7 @@ private:
           //exec_ pointers still have the same signature, so the second argument is ignored
           virtual void eval(CalcStackType& comp_stack, Calculator& parent) {
                if(comp_stack.size()<1) throw runtime_error("No argument to \"" + this->to_str() + "\"");
-               exec_(comp_stack.top().get_scratch_p(parent), NULL);
+              this->exec_(comp_stack.top().get_scratch_p(parent), NULL);
           };
           //virtual eAsc Assoc() = 0;
           bool isBin() const {
@@ -235,7 +235,7 @@ private:
      };
 
      /// \brief Infix Operator Token
-     
+
      /// Binary, with specified associativity. May or may not assign to variables.
      class infOpT
                : public OpT {
@@ -265,7 +265,7 @@ private:
                } else {
                     p1 = pval1->get_scratch_p(parent);
                }
-               exec_(p1,p2);
+               this->exec_(p1,p2);
                /*if(assigns_)
             	   Trim(*p1);*/
                comp_stack.pop();
@@ -313,19 +313,19 @@ private:
           typedef void (*fptr) (int n, T* args []);
           //maximum number of function arguments is N = numeric_limits<U>::max() == 127
           enum { NARG_MAX = 127 /**< Maximum number of function arguments; equal to numeric_limits<U>::max() */ };
-     private:
+     protected:
           U n_;
           fptr exec_;	 ///function to be executed upon function evaluation
      public:
           FnT(const string& id, U n, fptr exec ) : Tk(id),n_(n),exec_(exec) {}
           FnT(string&& id, U n, fptr exec ) : Tk(move(id)),n_(n),exec_(exec) {}
           ///Evaluation makes use of the fact the vector in our CalcStackType is directly accessible.
-          
+
           void eval(CalcStackType& comp_stack, Calculator& parent) {
                // arg1 arg2 arg3 argn
                auto p_last_valt=comp_stack.v_.end()-1;
                int argsn = *(p_last_valt->get_scratch_p(parent));
-                              
+
                vector<T*> args;
                args.reserve(argsn);
                args.resize(argsn);
@@ -342,7 +342,7 @@ private:
                cout<<")"<<endl;
 #endif
 
-               exec_(argsn, args.data());
+               this->exec_(argsn, args.data());
 
                //pop all args from the computation stack
                for(int i=0; i<argsn; i++)
@@ -405,7 +405,7 @@ public:
      friend int operator>>(istream& is, Calculator& calc ) {
           return  calc.ReadAndComp(is);
      }
-     
+
      ~Calculator() {
           _clear_tp_vec(rpn_);
      }

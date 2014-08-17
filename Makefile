@@ -10,7 +10,7 @@ CXXFLAGS= -Wall -pedantic -Wno-long-long -O0 -ggdb -std=c++0x -DSTYPE=u64
 DOXY=Doxyfile
 CLIBS=
 #-lreadline
-CXX=g++-4.5
+CXX=g++
 RM=rm -rf
 
 #DIRECTORIES:

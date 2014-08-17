@@ -15,9 +15,11 @@ Generate it by running:
 The program can be compiled by running
 
 	make compile
-`g++-4.5` is required for successful compilation, `doxygen` for generating the documentation.
 
 Running `make` will both compile the program and create the documentation.
+
+*Prerequisites*
+	Last tested on g++-4.8 and doxygen 1.8.6.
 
 The code was created as part of a school project and is now published under GNU GPLv2.
 

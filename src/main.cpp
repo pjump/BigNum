@@ -12,13 +12,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 //#define DEBUG
 //#define private public
 //#define DEBUG_RPN
 /**
-\mainpage 
+\mainpage
 
 \section about BigNum—An Arbitrary Precision Computation Suite
 
@@ -60,7 +60,7 @@ The Calculator provides standard template code for all basic numerical operators
 #include <readline/history.h>
 #include <unistd.h>
 #include <sys/io.h>
-#endif 
+#endif
 
 using namespace std;
 using namespace BigNum;
@@ -86,7 +86,7 @@ typedef Calculator<SBigN> Calc;
 int ReadFromCin(Calc& calc) {
 	#ifdef USE_READLINE
 	if(isatty(fileno(stdin))){
-	  int fails=0; 	
+	  int fails=0;
 	  char *buf;
 	  rl_bind_key('\t',rl_abort);//auto-complete
 
@@ -119,7 +119,7 @@ int ReadFromCin(Calc& calc) {
 int main( int argc, const char *argv[] )
 {
      Calc calc;
-     
+
      if(argc>1) {
 		  int fails=0;
           if(argc>2)
